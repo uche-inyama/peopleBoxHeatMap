@@ -31,5 +31,4 @@ ActiveRecord::Schema.define(version: 20190311093108) do
     t.datetime "updated_at", null: false
     t.index ["employee_id"], name: "index_responses_on_employee_id"
   end
-
 end

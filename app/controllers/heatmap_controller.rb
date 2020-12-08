@@ -1,7 +1,9 @@
 class HeatmapController < ApplicationController
   def index 
     @dimension =  heatmap_params[:dimension]
-    @response = Response.joins(:employee).group(:driver_name).group(@dimension.to_sym).average(:score)
+    @start = heatmap_params[:start]
+    @end = heatmap_params[:end]
+    @response = Response.where('responses.created_at BETWEEN ? AND ?', @start, @end).joins(:employee).group(:driver_name).group(@dimension.to_sym).average(:score)
     drivers = []
     finalResult = []
     @response.each do |keys, value|
@@ -15,10 +17,9 @@ class HeatmapController < ApplicationController
     render json: finalResult 
   end
 
-
   private
 
     def heatmap_params
-      params.permit(:dimension)
+      params.permit(:dimension, :start, :end)
     end
 end
